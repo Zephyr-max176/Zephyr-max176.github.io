@@ -1,613 +1,363 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=375,user-scalable=no">
-<title>浙江青少年心理援助热线</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  width:375px;
-  margin:0 auto;
-  background:linear-gradient(to bottom,#fff9f4,#f0f7ff);
-  font-family:PingFang SC,Microsoft YaHei,sans-serif;
-  padding:12px;
-  color:#333;
-}
-.header{
-  text-align:center;
-  font-size:22px;
-  font-weight:bold;
-  padding:12px 0 20px;
-  color:#2c3e50;
-}
-.card{
-  background:#fff;
-  border-radius:16px;
-  padding:16px;
-  margin-bottom:16px;
-  box-shadow:0 2px 8px rgba(0,0,0,0.05);
-}
-.card-title{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:12px;
-  color:#2d3748;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.item{
-  margin-bottom:10px;
-}
-.phone{
-  font-size:18px;
-  font-weight:bold;
-  color:#005aaa;
-}
-.name{
-  font-size:15px;
-  color:#4a5568;
-  margin-top:2px;
-}
-.time{
-  font-size:12px;
-  color:#718096;
-  margin-top:2px;
-}
-.district{
-  margin-top:12px;
-  padding-left:10px;
-  border-left:3px solid #9cd5ff;
-}
-.district-title{
-  font-size:15px;
-  font-weight:bold;
-  color:#4a5568;
-  margin-bottom:6px;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>全国心理援助热线地图 | 青少年守护热线</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: linear-gradient(145deg, #fef9ef 0%, #eef2f7 100%);
+      font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 20px 14px 50px;
+      color: #1e2b3c;
+    }
+    .container {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-size: 26px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #1e4b6e, #2a7faa);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.3px;
+    }
+    .hero p {
+      font-size: 14px;
+      color: #5a6f82;
+      margin-top: 8px;
+    }
+    .national-card {
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 20px 18px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      border: 1px solid rgba(60,130,180,0.15);
+    }
+    .national-title {
+      font-size: 19px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      color: #1e5a88;
+      border-left: 4px solid #f7b32b;
+      padding-left: 12px;
+    }
+    .hotline-item {
+      margin-bottom: 14px;
+    }
+    .hotline-number {
+      font-size: 21px;
+      font-weight: 800;
+      color: #0460b0;
+      letter-spacing: 0.5px;
+    }
+    .hotline-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #2c3e50;
+      margin-top: 3px;
+    }
+    .hotline-time {
+      font-size: 12px;
+      color: #6f8faa;
+      margin-top: 2px;
+    }
+    .section-title {
+      font-size: 17px;
+      font-weight: 600;
+      margin: 20px 0 12px 8px;
+      color: #2c4b6e;
+    }
+    .province-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .province-btn {
+      background: white;
+      border-radius: 50px;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #2c3e50;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      transition: all 0.2s;
+      border: 1px solid #e2eaf1;
+      cursor: pointer;
+    }
+    .province-btn:active {
+      background: #e9f2fa;
+      transform: scale(0.96);
+    }
+    .detail-view {
+      display: none;
+    }
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: white;
+      border: none;
+      border-radius: 40px;
+      padding: 8px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 20px;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    }
+    .province-hotline-card {
+      background: #fff2df;
+      border-left: 6px solid #f5a623;
+      border-radius: 24px;
+      padding: 18px;
+      margin-bottom: 24px;
+    }
+    .city-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .city-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .city-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 20px;
+      background: #fef6ea;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 18px;
+      color: #1e3a5f;
+      border-bottom: 1px solid #ffe0b5;
+    }
+    .city-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toggle-icon {
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+    .district-list {
+      display: none;
+      padding: 12px 16px;
+      background: #fefefe;
+      border-top: 1px solid #f0e9df;
+    }
+    .district-list.show {
+      display: block;
+    }
+    .district-item {
+      padding: 12px 0;
+      border-bottom: 1px solid #f0eef2;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .district-name {
+      font-size: 15px;
+      font-weight: 500;
+      width: 38%;
+      color: #2d4a6e;
+    }
+    .district-phone {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0460b0;
+      width: 58%;
+      word-break: break-all;
+    }
+    .district-time {
+      font-size: 11px;
+      color: #7895b0;
+      width: 100%;
+      margin-top: 5px;
+    }
+    .no-data-note {
+      background: #f7f9fc;
+      padding: 14px;
+      border-radius: 18px;
+      font-size: 13px;
+      color: #4f6f8f;
+      text-align: center;
+      margin: 12px 0;
+    }
+    .footer-note {
+      font-size: 12px;
+      color: #8fa0b5;
+      text-align: center;
+      margin-top: 32px;
+      padding: 16px;
+      background: #eef3fc;
+      border-radius: 28px;
+    }
+  </style>
 </head>
 <body>
-<a href="home.html">跳转</a>
-<a href="quanguo.html">跳转</a>
-<div class="header">📞 浙江青少年心理援助热线</div>
+<div class="container" id="app">
+  <div id="homeView">
+    <div class="hero">
+      <h1>❤️ 全国心理援助热线</h1>
+      <p>青少年 · 24小时守护 · 真实号码一键查</p>
+    </div>
+    <div class="national-card">
+      <div class="national-title">🌍 国家级·永远畅通</div>
+      <div class="hotline-item">
+        <div class="hotline-number">12355</div>
+        <div class="hotline-name">共青团青少年心理咨询与法律援助热线</div>
+        <div class="hotline-time">24小时 · 全国</div>
+      </div>
+      <div class="hotline-item">
+        <div class="hotline-number">12356</div>
+        <div class="hotline-name">全国统一心理援助热线 (国家卫健委)</div>
+        <div class="hotline-time">24小时 · 全国</div>
+      </div>
+      <div class="hotline-item">
+        <div class="hotline-number">400-161-9995</div>
+        <div class="hotline-name">希望24热线 · 生命危机干预</div>
+        <div class="hotline-time">24小时 · 全国</div>
+      </div>
+    </div>
+    <div class="section-title">📌 点击省份，查看详细求助号码</div>
+    <div class="province-grid" id="provinceList"></div>
+    <div class="footer-note">
+      💡 所有热线均来自官方公开渠道，已核实号码有效性。<br>
+      数据持续更新中，部分区县无公开热线仅展示市级号码。
+    </div>
+  </div>
+  <div id="detailView" class="detail-view">
+    <button class="back-btn" id="backHomeBtn">← 返回省份列表</button>
+    <div id="detailContent"></div>
+  </div>
+</div>
+<script src="data.js"></script>
+<script>
+  // 从外部数据文件获取数据
+  if (typeof provinceHotlineMap === 'undefined' || typeof cityData === 'undefined') {
+    document.getElementById('detailContent').innerHTML = '<div class="no-data-note">⚠️ 数据文件加载失败，请检查 data.js 是否存在。</div>';
+  }
 
-<!-- 全国·省级总览 -->
-<div class="card">
-  <div class="card-title">🌍 全国·省级统一热线</div>
-  <div class="item">
-    <div class="phone">12355</div>
-    <div class="name">全国青少年服务台</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">浙江省统一心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">全国统一心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-</div>
+  const allProvinces = Object.keys(provinceHotlineMap).sort();
 
-<!-- 杭州市 -->
-<div class="card">
-  <div class="card-title">🏙️ 杭州市</div>
-  <div class="item">
-    <div class="phone">0571-85029595</div>
-    <div class="name">杭州市心理危机干预热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">0571-87025885</div>
-    <div class="name">杭州市学生心理热线</div>
-    <div class="time">周一至周五18:00-21:00</div>
-  </div>
-  <div class="district">
-    <div class="district-title">萧山区</div>
-    <div class="item">
-      <div class="phone">0571-22885885</div>
-      <div class="name">“萧老师”心理热线</div>
-      <div class="time">周一至周五18:00-21:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">余杭区</div>
-    <div class="item">
-      <div class="phone">0571-88578858</div>
-      <div class="name">“悆见”心理成长中心热线</div>
-      <div class="time">周一至周五17:00-20:00</div>
-    </div>
-    <div class="item">
-      <div class="phone">0571-86252668</div>
-      <div class="name">余杭区心理咨询热线</div>
-      <div class="time">24小时</div>
-    </div>
-    <div class="item">
-      <div class="phone">0571-89012355</div>
-      <div class="name">余杭区12355青少年服务热线</div>
-      <div class="time">24小时</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">滨江区</div>
-    <div class="item">
-      <div class="phone">12355</div>
-      <div class="name">青少年服务台</div>
-      <div class="time">24小时</div>
-    </div>
-  </div>
-</div>
+  function renderHome() {
+    const container = document.getElementById('provinceList');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let p of allProvinces) {
+      const btn = document.createElement('div');
+      btn.className = 'province-btn';
+      btn.textContent = p;
+      btn.addEventListener('click', () => showProvinceDetail(p));
+      container.appendChild(btn);
+    }
+  }
 
-<!-- 温州市 -->
-<div class="card">
-  <div class="card-title">🏙️ 温州市</div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">温州市心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">12355</div>
-    <div class="name">温州市12355青少年服务台</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">0577-88060130</div>
-    <div class="name">温州市青少年活动中心心理咨询</div>
-    <div class="time">需预约</div>
-  </div>
-  <div class="district">
-    <div class="district-title">鹿城区</div>
-    <div class="item">
-      <div class="phone">0577-88892555</div>
-      <div class="name">青少年心灵润养中心热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-    <div class="item">
-      <div class="phone">4008009585</div>
-      <div class="name">未成年人心理辅导中心</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">瓯海区</div>
-    <div class="item">
-      <div class="phone">56600525</div>
-      <div class="name">“瓯孩心园”公益心理咨询热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">乐清市</div>
-    <div class="item">
-      <div class="phone">61528890</div>
-      <div class="name">未成年人心理健康教育指导中心（热线）</div>
-      <div class="time">请电话咨询</div>
-    </div>
-    <div class="item">
-      <div class="phone">61618890</div>
-      <div class="name">未成年人心理健康教育指导中心（面询）</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-</div>
+  function renderProvinceDetail(provinceName) {
+    const provinceHotline = provinceHotlineMap[provinceName] || "暂无专属省级热线，请优先拨打全国 12355 或 12356";
+    let html = `
+      <div class="province-hotline-card">
+        <div style="font-weight:700; margin-bottom:8px;">📞 ${provinceName} 省级心理援助热线</div>
+        <div class="hotline-number" style="font-size:18px;">${provinceHotline}</div>
+        <div class="hotline-time">* 若占线或所在区县无专线，请直接拨打全国热线12355</div>
+      </div>
+      <div class="city-list">
+    `;
+    const cities = cityData[provinceName] || {};
+    if (Object.keys(cities).length === 0) {
+      html += `<div class="no-data-note">📢 该省份暂无详细区县数据，建议拨打省级或全国热线 12356/12355 获取帮助。</div>`;
+    } else {
+      for (let [cityName, hotlines] of Object.entries(cities)) {
+        const cityId = `city-${provinceName.replace(/\s/g,'')}-${cityName}`.replace(/[^a-zA-Z0-9\u4e00-\u9fa5-]/g,'');
+        let districtHtml = '';
+        for (let hot of hotlines) {
+          districtHtml += `
+            <div class="district-item">
+              <div class="district-name">${hot.name}</div>
+              <div class="district-phone">${hot.phone}</div>
+              <div class="district-time">⏱️ ${hot.time}</div>
+            </div>
+          `;
+        }
+        html += `
+          <div class="city-card">
+            <div class="city-header" data-target="${cityId}">
+              <div class="city-name">🏙️ ${cityName}</div>
+              <div class="toggle-icon">▼</div>
+            </div>
+            <div id="${cityId}" class="district-list">
+              ${districtHtml}
+            </div>
+          </div>
+        `;
+      }
+    }
+    html += `</div><div class="footer-note">✅ 所有号码均来自官方公开渠道，部分区县无公开热线则仅展示市级号码。如有疑问请以当地最新公告为准。</div>`;
+    return html;
+  }
 
-<!-- 嘉兴市 -->
-<div class="card">
-  <div class="card-title">🏙️ 嘉兴市</div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">嘉兴市心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">0573-88517885</div>
-    <div class="name">嘉兴市心理与家庭教育咨询热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">南湖区</div>
-    <div class="item">
-      <div class="phone">0573-82870722</div>
-      <div class="name">24小时心理咨询热线</div>
-      <div class="time">24小时</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">海宁市</div>
-    <div class="item">
-      <div class="phone">0573-87220020</div>
-      <div class="name">“慧爱心灵”热线</div>
-      <div class="time">工作日及节假日8:30-17:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">秀洲区</div>
-    <div class="item">
-      <div class="name">“向阳花开”儿童青少年心理健康服务中心</div>
-      <div class="time">热线接听室全天候守护</div>
-    </div>
-  </div>
-</div>
+  function bindToggleEvents() {
+    document.querySelectorAll('.city-header').forEach(header => {
+      header.removeEventListener('click', toggleHandler);
+      header.addEventListener('click', toggleHandler);
+    });
+  }
+  function toggleHandler(e) {
+    const targetId = this.getAttribute('data-target');
+    const districtDiv = document.getElementById(targetId);
+    if (districtDiv) {
+      districtDiv.classList.toggle('show');
+      const icon = this.querySelector('.toggle-icon');
+      if (icon) icon.textContent = districtDiv.classList.contains('show') ? '▲' : '▼';
+    }
+  }
 
-<!-- 湖州市 -->
-<div class="card">
-  <div class="card-title">🏙️ 湖州市</div>
-  <div class="item">
-    <div class="phone">2251885</div>
-    <div class="name">湖州市青少年心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">湖州市心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">湖州心晴</div>
-    <div class="item">
-      <div class="phone">0572-2136677</div>
-      <div class="name">湖州市心理咨询</div>
-      <div class="time">可电话预约面询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">南太湖新区</div>
-    <div class="item">
-      <div class="phone">0572-2035512</div>
-      <div class="time">周六、周日上午8:30-11:30 下午13:30-16:30</div>
-    </div>
-  </div>
-  <div class="item">
-    <div class="name">吴兴区、长兴县、安吉县、德清县</div>
-    <div class="time">依托市级2251885 / 全国12356</div>
-  </div>
-</div>
+  function showProvinceDetail(provinceName) {
+    document.getElementById('homeView').style.display = 'none';
+    const detailView = document.getElementById('detailView');
+    detailView.style.display = 'block';
+    const detailContent = document.getElementById('detailContent');
+    detailContent.innerHTML = renderProvinceDetail(provinceName);
+    bindToggleEvents();
+    window.scrollTo(0,0);
+  }
 
-<!-- 绍兴市 -->
-<div class="card">
-  <div class="card-title">🏙️ 绍兴市</div>
-  <div class="item">
-    <div class="phone">88005959</div>
-    <div class="name">绍兴市中小学心理统一热线</div>
-    <div class="time">按提示选择区县；20:30后转12356</div>
-  </div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">绍兴市心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">分区接入</div>
-    <div class="item"><div class="name">越城区：按1 | 柯桥区：按2 | 上虞区：按3 | 新昌县：按6</div></div>
-  </div>
-  <div class="district">
-    <div class="district-title">柯桥区</div>
-    <div class="item">
-      <div class="phone">0575-89986729</div>
-      <div class="name">“柯心青听”心理热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">诸暨市</div>
-    <div class="item">
-      <div class="phone">85157777</div>
-      <div class="name">心+心理援助热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-    <div class="item">
-      <div class="phone">85885885</div>
-      <div class="name">社会心理服务热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-</div>
+  function backToHome() {
+    document.getElementById('homeView').style.display = 'block';
+    document.getElementById('detailView').style.display = 'none';
+    window.scrollTo(0,0);
+  }
 
-<!-- 金华市 -->
-<div class="card">
-  <div class="card-title">🏙️ 金华市</div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">金华市心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">金华市心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">0579-82055405</div>
-    <div class="name">金华市未成年人心理辅导中心</div>
-    <div class="time">周二至周日9:00-12:00 14:00-17:00</div>
-  </div>
-  <div class="district">
-    <div class="district-title">义乌市</div>
-    <div class="item">
-      <div class="phone">0579-85255444</div>
-      <div class="name">青少年心理援助热线</div>
-      <div class="time">24小时</div>
-    </div>
-    <div class="item">
-      <div class="phone">0579-85858858</div>
-      <div class="name">儿童青少年心灵成长中心</div>
-      <div class="time">6:00-23:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">婺城区</div>
-    <div class="item">
-      <div class="name">未成年人心理辅导站（妇联）</div>
-      <div class="time">周二、周四下午14:00-17:00 周六9:00-17:00</div>
-    </div>
-  </div>
-</div>
-
-<!-- 衢州市 -->
-<div class="card">
-  <div class="card-title">🏙️ 衢州市</div>
-  <div class="item">
-    <div class="phone">0570-3087345</div>
-    <div class="name">中小学心理健康教育指导中心服务热线</div>
-    <div class="time">请电话咨询</div>
-  </div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">12355</div>
-    <div class="name">12355青少年服务台</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">江山市</div>
-    <div class="item">
-      <div class="phone">0570-4585885</div>
-      <div class="name">“江老师”聆心热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-    <div class="item">
-      <div class="phone">15325403885</div>
-      <div class="name">第四人民医院心理援助热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">柯城区 / 常山县</div>
-    <div class="item"><div class="name">可拨打 12355 或 96525</div></div>
-  </div>
-  <div class="item">
-    <div class="phone">0570-8012456</div>
-    <div class="name">未成年人心理健康辅导中心</div>
-    <div class="time">周一至周日8:30-18:00</div>
-  </div>
-</div>
-
-<!-- 舟山市 -->
-<div class="card">
-  <div class="card-title">🏙️ 舟山市</div>
-  <div class="item">
-    <div class="phone">2912345</div>
-    <div class="name">舟山市中小学生心理热线</div>
-    <div class="time">8:30-11:00 14:00-16:30；周三/五/六18:30-20:30</div>
-  </div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">12355</div>
-    <div class="name">12355青少年服务台</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">普陀区</div>
-    <div class="item">
-      <div class="phone">18857086252</div>
-      <div class="name">师生心理热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-    <div class="item">
-      <div class="phone">8185252</div>
-      <div class="name">24小时心理服务热线</div>
-      <div class="time">24小时</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">嵊泗县</div>
-    <div class="item">
-      <div class="phone">0580-595197</div>
-      <div class="name">未成年人心理辅导室</div>
-      <div class="time">周一至周五工作时间</div>
-    </div>
-  </div>
-</div>
-
-<!-- 台州市 -->
-<div class="card">
-  <div class="card-title">🏙️ 台州市</div>
-  <div class="item">
-    <div class="phone">12356</div>
-    <div class="name">心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">12355</div>
-    <div class="name">12355青少年服务台</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">椒江区</div>
-    <div class="item">
-      <div class="phone">0576-89005525</div>
-      <div class="name">青少年健康服务中心</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="item">
-    <div class="name">温岭市、临海市等</div>
-    <div class="time">拨打12356或96525</div>
-  </div>
-</div>
-
-<!-- 丽水市 -->
-<div class="card">
-  <div class="card-title">🏙️ 丽水市</div>
-  <div class="item">
-    <div class="phone">0578-2075676</div>
-    <div class="name">未成年人心理辅导中心</div>
-    <div class="time">周一至周五9:00-11:00 13:30-16:30</div>
-  </div>
-  <div class="item">
-    <div class="phone">0578-2125885</div>
-    <div class="name">24小时心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">96525</div>
-    <div class="name">省级统一心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">莲都区</div>
-    <div class="item">
-      <div class="phone">0578-2608585</div>
-      <div class="name">未成年人成长指导中心</div>
-      <div class="time">每天8:30-20:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">龙泉市</div>
-    <div class="item">
-      <div class="phone">7025520</div>
-      <div class="name">青少年成长中心</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">缙云县</div>
-    <div class="item">
-      <div class="name">“暖心之城·关爱之家”</div>
-      <div class="time">可咨询预约</div>
-    </div>
-  </div>
-</div>
-<!-- 宁波市 -->
-<div class="card">
-  <div class="card-title">🏙️ 宁波市</div>
-  <div class="item">
-    <div class="phone">81859666</div>
-    <div class="name">宁波市未成年人心理援助热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="item">
-    <div class="phone">87368585</div>
-    <div class="name">宁波市中小学心理服务热线</div>
-    <div class="time">24小时</div>
-  </div>
-  <div class="district">
-    <div class="district-title">鄞州区</div>
-    <div class="item">
-      <div class="phone">88451010</div>
-      <div class="name">鄞州区中小学心理热线</div>
-      <div class="time">周一至周五工作日，周六上午</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">海曙区</div>
-    <div class="item">
-      <div class="phone">87321890</div>
-      <div class="name">海曙区教育心理热线</div>
-      <div class="time">周一至周五：工作时间</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">江北区</div>
-    <div class="item">
-      <div class="phone">55861890</div>
-      <div class="name">江北区中小学心理热线</div>
-      <div class="time">周五工作时间</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">镇海区</div>
-    <div class="item">
-      <div class="phone">86278696</div>
-      <div class="name">镇海区中小学心理热线</div>
-      <div class="time">周一至周六 9:00-17:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">北仑区</div>
-    <div class="item">
-      <div class="phone">86783665</div>
-      <div class="name">北仑区中小学心理热线</div>
-      <div class="time">周一至周五 8:30-11:30, 13:30-17:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">奉化区</div>
-    <div class="item">
-      <div class="phone">88968585</div>
-      <div class="name">奉化区中小学心理热线</div>
-      <div class="time">周六、周日上午</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">余姚市</div>
-    <div class="item">
-      <div class="phone">62605986</div>
-      <div class="name">余姚市中小学心理热线</div>
-      <div class="time">周六、周日白天</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">慈溪市</div>
-    <div class="item">
-      <div class="phone">63898070 / 63895339</div>
-      <div class="name">慈溪市青少年心理热线</div>
-      <div class="time">请电话咨询</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">宁海县</div>
-    <div class="item">
-      <div class="phone">65583890</div>
-      <div class="name">宁海县中小学心理热线</div>
-      <div class="time">周一至周五 8:30-19:00</div>
-    </div>
-  </div>
-  <div class="district">
-    <div class="district-title">象山县</div>
-    <div class="item">
-      <div class="phone">65765137</div>
-      <div class="name">象山县中小学心理热线</div>
-      <div class="time">周一至周五 9:00-11:30, 13:30-16:30</div>
-    </div>
-  </div>
-</div>
+  function init() {
+    renderHome();
+    document.getElementById('backHomeBtn').addEventListener('click', backToHome);
+    document.getElementById('homeView').style.display = 'block';
+    document.getElementById('detailView').style.display = 'none';
+  }
+  init();
+</script>
 </body>
 </html>
