@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>匿名树洞 - 心理援助</title>
+    <!-- 引入统一的全局 CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    
+    <!-- 本页面专用样式：输入框、树洞留言列表排版 -->
+    <style>
+        .form-group { margin-bottom: 15px; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 12px 16px; border: 1px solid #dce4eb;
+            border-radius: 30px; background: #f8fafc; font-size: 14px; outline: none;
+            font-family: inherit; transition: 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus { border-color: #1e5a88; background: #fff; }
+        .form-group textarea { border-radius: 16px; min-height: 120px; resize: vertical; }
+
+        .message-list-title { font-weight: 600; font-size: 16px; margin-bottom: 12px; color: #2c4b6e; }
+        .message-item {
+            background: #ffffff; border-radius: 16px; padding: 15px 16px;
+            margin-bottom: 12px; border-left: 4px solid #f7b32b;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+        }
+        .message-item .meta { display: flex; justify-content: space-between; font-size: 12px; color: #8fa0b5; margin-bottom: 8px; }
+        .message-item .content { font-size: 14px; line-height: 1.6; color: #2d4a6e; }
+        .empty-message { text-align: center; color: #a0b8cf; padding: 30px 0; font-size: 14px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 顶部导航 -->
+    <div class="top-nav">
+        <span>❤️ 心理援助</span>
+        <div class="nav-links">
+            <a href="index.html">查热线</a>
+            <a href="article.html">心理科普</a>
+            <a href="test.html">情绪自测</a>
+            <a href="treehole.html" class="active">匿名树洞</a>
+            <a href="about.html">关于本站</a>
+        </div>
+    </div>
+
+    <h2>🌳 匿名树洞</h2>
+    <p class="subtitle">把烦恼留在这里，带走平静。</p>
+
+    <!-- 安全提示（直接使用全局 class） -->
+    <div class="safety-warning">
+        <strong>🚨 重要提醒：</strong><br>
+        本页面仅为匿名倾诉树洞，<strong>不提供即时心理干预和回复</strong>。<br>
+        如您有自伤或危及生命的念头，请立即返回首页拨打 <strong>110/120</strong> 寻求紧急救援！
+    </div>
+
+    <!-- 提交表单（使用全局 card 类） -->
+    <div class="card">
+        <div class="form-group">
+            <input type="text" id="nickname" placeholder="你的昵称（选填，不填则为“匿名”）" maxlength="20">
+        </div>
+        <div class="form-group">
+            <textarea id="content" placeholder="写下此刻让你烦恼、痛苦或想倾诉的事情..."></textarea>
+        </div>
+        <!-- 调用了全局的 btn-submit 样式 -->
+        <button class="btn-submit" onclick="submitMessage()">投递到树洞</button>
+    </div>
+
+    <!-- 倾诉记录展示 -->
+    <div class="message-list-title">💬 树洞里的悄悄话</div>
+    <div id="messageList">
+        <!-- 由 JS 动态渲染 -->
+    </div>
+
+    <!-- 底部说明 -->
+    <div class="footer-note">
+        🌙 所有倾诉仅保存在你当前浏览器的本地缓存中，不会上传至任何服务器。清空浏览器数据后将会消失。
+    </div>
+</div>
+
+<script>
+    // 读取本地存储的留言数据
+    let messages = JSON.parse(localStorage.getItem('treeholeMessages')) || [];
+
+    // 渲染留言列表
+    function renderMessages() {
+        const list = document.getElementById('messageList');
+        list.innerHTML = '';
+
+        if (messages.length === 0) {
+            list.innerHTML = `<div class="empty-message">🌸 还没有留言，写下你的第一条心里话吧。</div>`;
+            return;
+        }
+
+        // 按时间倒序展示（最新在最上面）
+        const reversed = [...messages].reverse();
+        reversed.forEach(msg => {
+            const item = document.createElement('div');
+            item.className = 'message-item';
+            const nick = msg.nickname ? msg.nickname : '匿名';
+            const time = new Date(msg.timestamp).toLocaleString('zh-CN');
+            item.innerHTML = `
+                <div class="meta"><span>${nick}</span><span>${time}</span></div>
+                <div class="content">${msg.content}</div>
+            `;
+            list.appendChild(item);
+        });
+    }
+
+    // 提交留言
+    function submitMessage() {
+        const nicknameInput = document.getElementById('nickname');
+        const contentInput = document.getElementById('content');
+        
+        const nickname = nicknameInput.value.trim();
+        const content = contentInput.value.trim();
+
+        if (!content) {
+            alert("请写下你想倾诉的内容再投递哦！");
+            return;
+        }
+
+        // 构建留言对象
+        const newMessage = {
+            nickname: nickname || '匿名',
+            content: content,
+            timestamp: Date.now()
+        };
+
+        // 存到数组并重新写入 LocalStorage
+        messages.push(newMessage);
+        localStorage.setItem('treeholeMessages', JSON.stringify(messages));
+
+        // 清空输入框
+        nicknameInput.value = '';
+        contentInput.value = '';
+
+        // 重新渲染列表
+        renderMessages();
+
+        // 给用户反馈
+        alert("已投递到树洞！愿你在这里获得一丝释然。");
+    }
+
+    // 页面加载时渲染
+    document.addEventListener('DOMContentLoaded', renderMessages);
+</script>
+</body>
+</html>

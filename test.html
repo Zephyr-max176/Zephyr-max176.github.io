@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>情绪自测 - 心理援助</title>
+    <!-- 引入统一的全局 CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- 本页面专用样式：量表按钮、题卡排版、选项布局 -->
+    <style>
+        .scale-selector {
+            display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+            margin-bottom: 25px;
+        }
+        .scale-btn {
+            background: white; border-radius: 50px; padding: 8px 18px; font-size: 14px; font-weight: 500;
+            color: #2c3e50; border: 1px solid #e2eaf1; cursor: pointer; transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .scale-btn:active { background: #e9f2fa; transform: scale(0.96); }
+        .scale-btn.active {
+            background: #1e5a88; color: white; border-color: #1e5a88; box-shadow: 0 4px 8px rgba(30,90,136,0.2);
+        }
+
+        .test-card { display: none; }
+        .test-card h3 {
+            font-size: 18px; margin-bottom: 10px; border-left: 4px solid #f7b32b;
+            padding-left: 12px; color: #1e4b6e;
+        }
+        .test-card .question {
+            margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #f0eef2;
+        }
+        .test-card .question p { font-size: 15px; font-weight: 500; margin-bottom: 10px; color: #2c3e50; }
+        
+        /* 选项布局 */
+        .options { display: flex; flex-wrap: wrap; gap: 8px; }
+        .options label {
+            background: #f8fafc; border: 1px solid #dce4eb; border-radius: 20px;
+            padding: 6px 14px; font-size: 13px; color: #4a5a6a; cursor: pointer;
+            display: flex; align-items: center; gap: 5px; transition: 0.1s;
+        }
+        .options input[type="radio"] { accent-color: #1e5a88; transform: scale(1.1); margin-right: 2px; }
+        .options label:has(input:checked) { background: #e4edf6; border-color: #1e5a88; font-weight: 500; color: #1e5a88; }
+
+        .submit-wrap { text-align: center; margin: 10px 0 20px; }
+
+        /* 结果展示 */
+        .result-box {
+            display: none; margin-top: 20px; padding: 15px;
+            background: #fcfaf5; border-radius: 20px; border: 1px solid #ebe3d8;
+        }
+        .result-box h4 { font-size: 18px; color: #1e5a88; margin-bottom: 5px; }
+        .result-box .score { font-size: 32px; font-weight: 800; color: #0460b0; }
+        .result-box .desc { margin-top: 10px; font-size: 15px; color: #3d5a73; line-height: 1.6; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- 顶部导航 -->
+    <div class="top-nav">
+        <span>❤️ 心理援助</span>
+        <div class="nav-links">
+            <a href="index.html">查热线</a>
+            <a href="article.html">心理科普</a>
+            <a href="test.html" class="active">情绪自测</a>
+            <a href="treehole.html">匿名树洞</a>
+            <a href="about.html">关于本站</a>
+        </div>
+    </div>
+
+    <h2>情绪健康自评</h2>
+    <p class="subtitle">选择下方量表，根据近两周情况勾选</p>
+
+    <!-- 五个量表按钮 -->
+    <div class="scale-selector">
+        <button class="scale-btn" data-scale="phq9">PHQ-9 (抑郁)</button>
+        <button class="scale-btn" data-scale="gad7">GAD-7 (焦虑)</button>
+        <button class="scale-btn" data-scale="sds">SDS (抑郁自评)</button>
+        <button class="scale-btn" data-scale="sas">SAS (焦虑自评)</button>
+        <button class="scale-btn" data-scale="scl90">SCL-90 (综合)</button>
+    </div>
+
+    <!-- 测试区域 -->
+    <div id="test-area">
+        <div class="card test-card" id="card-phq9">
+            <h3>PHQ-9 抑郁症筛查量表</h3>
+            <div id="questions-phq9"></div>
+            <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('phq9')">查看评估结果</button></div>
+            <div class="result-box" id="result-phq9"></div>
+        </div>
+
+        <div class="card test-card" id="card-gad7">
+            <h3>GAD-7 广泛性焦虑量表</h3>
+            <div id="questions-gad7"></div>
+            <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('gad7')">查看评估结果</button></div>
+            <div class="result-box" id="result-gad7"></div>
+        </div>
+
+        <div class="card test-card" id="card-sds">
+            <h3>SDS 抑郁自评量表 (20题)</h3>
+            <div id="questions-sds"></div>
+            <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('sds')">查看评估结果</button></div>
+            <div class="result-box" id="result-sds"></div>
+        </div>
+
+        <div class="card test-card" id="card-sas">
+            <h3>SAS 焦虑自评量表 (20题)</h3>
+            <div id="questions-sas"></div>
+            <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('sas')">查看评估结果</button></div>
+            <div class="result-box" id="result-sas"></div>
+        </div>
+
+        <div class="card test-card" id="card-scl90">
+            <h3>SCL-90 症状自评量表 (90题)</h3>
+            <div id="questions-scl90"></div>
+            <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('scl90')">查看评估结果</button></div>
+            <div class="result-box" id="result-scl90"></div>
+        </div>
+    </div>
+
+    <!-- 重要安全提示（直接使用全局 class） -->
+    <div class="safety-warning">
+        <strong>🚨 重要提醒：</strong><br>
+        本评估结果仅作初步自我参考，<strong>不可替代专业医学诊断</strong>。<br>
+        如您的情绪已经严重影响到生活，或出现自伤念头，请立即拨打 <strong>110</strong> 或 <strong>120</strong>，也可直接点击顶部导航栏的 <strong>“查热线”</strong> 寻求专业电话求助！
+    </div>
+</div>
+
+<!-- 引用外部数据与交互逻辑 -->
+<script src="js/test_data.js"></script>
+<script>
+    // 页面初始化
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('.scale-btn[data-scale="phq9"]').classList.add('active');
+        renderQuestions('phq9');
+    });
+
+    // 切换量表按钮事件
+    document.querySelectorAll('.scale-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.scale-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.test-card').forEach(c => c.style.display = 'none');
+            
+            const scale = this.getAttribute('data-scale');
+            const card = document.getElementById('card-' + scale);
+            if (card) {
+                card.style.display = 'block';
+                if (scaleData[scale] && scaleData[scale].questions.length > 0) {
+                    renderQuestions(scale);
+                }
+                document.getElementById('result-' + scale).style.display = 'none';
+            }
+        });
+    });
+
+    // 核心渲染函数（附带 SCL-90 分页逻辑）
+    function renderQuestions(scale) {
+        const container = document.getElementById('questions-' + scale);
+        if(!container) return;
+        
+        const data = scaleData[scale];
+        if(!data || !data.questions || data.questions.length === 0) {
+            container.innerHTML = `<div style="color:#7895b0; text-align:center; padding:30px;">暂无题目数据。</div>`;
+            return;
+        }
+
+        const questions = data.questions;
+        const options = data.options;
+        container.innerHTML = '';
+        
+        // SCL-90 题目较多，启用分页
+        if(scale === 'scl90') {
+            const pageSize = 10; // 每页10题
+            let currentPage = 0;
+            const totalPages = Math.ceil(questions.length / pageSize);
+
+            function renderPage(page) {
+                container.innerHTML = '';
+                const start = page * pageSize;
+                const end = Math.min(start + pageSize, questions.length);
+                for(let i = start; i < end; i++) {
+                    const div = document.createElement('div');
+                    div.className = 'question';
+                    let optionHTML = `<div class="options">`;
+                    options.forEach(opt => {
+                        optionHTML += `<label><input type="radio" name="q_${scale}_${i}" value="${opt.val}"> ${opt.text}</label>`;
+                    });
+                    optionHTML += `</div>`;
+                    div.innerHTML = `<p>${i + 1}. ${questions[i]}</p>` + optionHTML;
+                    container.appendChild(div);
+                }
+                // 分页控制
+                const navDiv = document.createElement('div');
+                navDiv.style.cssText = 'display:flex; justify-content:center; gap:15px; margin-top:20px;';
+                if(page > 0) navDiv.innerHTML += `<button class="btn-submit" style="padding:8px 15px; width:auto;" onclick="renderPageFor('${scale}', ${page-1})">上一页</button>`;
+                navDiv.innerHTML += `<span style="font-size:14px; color:#555; line-height:40px;">${page+1} / ${totalPages}</span>`;
+                if(page < totalPages - 1) navDiv.innerHTML += `<button class="btn-submit" style="padding:8px 15px; width:auto;" onclick="renderPageFor('${scale}', ${page+1})">下一页</button>`;
+                container.appendChild(navDiv);
+                window.scrollTo(0, 150);
+            }
+            window.renderPageFor = function(scale, page) {
+                renderPage(page);
+            };
+            renderPage(0);
+        } else {
+            // 其他量表全部显示
+            questions.forEach((q, index) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                let optionHTML = `<div class="options">`;
+                options.forEach(opt => {
+                    optionHTML += `<label><input type="radio" name="q_${scale}_${index}" value="${opt.val}"> ${opt.text}</label>`;
+                });
+                optionHTML += `</div>`;
+                div.innerHTML = `<p>${index + 1}. ${q}</p>` + optionHTML;
+                container.appendChild(div);
+            });
+        }
+    }
+
+    // 计算结果逻辑
+    function calculateResult(scale) {
+        const data = scaleData[scale];
+        if(!data || !data.questions) return;
+        const questions = data.questions;
+        let totalScore = 0;
+        let allAnswered = true;
+        
+        // 验证是否有遗漏
+        for(let i = 0; i < questions.length; i++) {
+            const selected = document.querySelector(`input[name="q_${scale}_${i}"]:checked`);
+            if(!selected) {
+                allAnswered = false;
+                const questionDivs = document.getElementById('questions-' + scale).children;
+                if(questionDivs[i]) {
+                    questionDivs[i].style.borderBottom = "1px solid #e53935";
+                    questionDivs[i].style.borderLeft = "3px solid #e53935";
+                }
+            }
+        }
+        if(!allAnswered) { alert("请完成所有题目后再点击查看结果！"); return; }
+
+        let resultHTML = "";
+        if(scale === 'phq9') {
+            let rawScore = 0;
+            for(let i = 0; i < questions.length; i++) {
+                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
+                rawScore += val;
+            }
+            let level = "", suggestion = "";
+            if(rawScore <= 4) { level = "无抑郁 (0-4分)"; suggestion = "当前情绪状态良好。"; }
+            else if(rawScore <= 9) { level = "轻度抑郁 (5-9分)"; suggestion = "建议多与亲友交流，注意调整作息。"; }
+            else if(rawScore <= 14) { level = "中度抑郁 (10-14分)"; suggestion = "建议寻求心理疏导或去精神卫生中心咨询。"; }
+            else if(rawScore <= 19) { level = "中重度抑郁 (15-19分)"; suggestion = "建议立即前往医院精神科就诊。"; }
+            else { level = "重度抑郁 (20-27分)"; suggestion = "需要高度重视！请立刻前往专业医疗机构评估！"; }
+            resultHTML = `<h4>PHQ-9 评估结果</h4><div>总分：<span class="score">${rawScore}</span></div>
+                          <div style="font-weight:bold; color:#e65100; margin-top:5px;">${level}</div>
+                          <div class="desc">${suggestion}</div>`;
+        } 
+        else if(scale === 'gad7') {
+            let rawScore = 0;
+            for(let i = 0; i < questions.length; i++) {
+                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
+                rawScore += val;
+            }
+            let level = "", suggestion = "";
+            if(rawScore <= 4) { level = "无焦虑 (0-4分)"; suggestion = "当前情绪状态良好。"; }
+            else if(rawScore <= 9) { level = "轻度焦虑 (5-9分)"; suggestion = "建议尝试腹式呼吸放松法。"; }
+            else if(rawScore <= 14) { level = "中度焦虑 (10-14分)"; suggestion = "建议寻求心理咨询帮助。"; }
+            else { level = "重度焦虑 (15-21分)"; suggestion = "强烈建议前往专业医院精神心理科就诊。"; }
+            resultHTML = `<h4>GAD-7 评估结果</h4><div>总分：<span class="score">${rawScore}</span></div>
+                          <div style="font-weight:bold; color:#e65100; margin-top:5px;">${level}</div>
+                          <div class="desc">${suggestion}</div>`;
+        }
+        else if(scale === 'sds') {
+            let rawScore = 0;
+            for(let i = 0; i < questions.length; i++) {
+                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
+                // 反向计分处理
+                if(data.reverseIndices.includes(i+1)) {
+                    rawScore += (5 - val);
+                } else {
+                    rawScore += val;
+                }
+            }
+            const stdScore = Math.floor(rawScore * 1.25);
+            let level = "";
+            if(stdScore < 50) level = "无抑郁 (正常)";
+            else if(stdScore < 60) level = "轻微至轻度抑郁";
+            else if(stdScore < 70) level = "中至重度抑郁";
+            else level = "重度抑郁";
+            resultHTML = `<h4>SDS 评估结果</h4><div>粗分：<b>${rawScore}</b>，标准分：<span class="score">${stdScore}</span></div>
+                          <div style="font-weight:bold; color:#e65100; margin-top:5px;">${level}</div>
+                          <div class="desc">如果分数处于中重度及以上，建议及时寻求专业心理帮助。</div>`;
+        } 
+        else if(scale === 'sas') {
+            let rawScore = 0;
+            for(let i = 0; i < questions.length; i++) {
+                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
+                if(data.reverseIndices.includes(i+1)) {
+                    rawScore += (5 - val);
+                } else {
+                    rawScore += val;
+                }
+            }
+            const stdScore = Math.round(rawScore * 1.25);
+            let level = "";
+            if(stdScore < 50) level = "正常 (无明显焦虑)";
+            else if(stdScore < 60) level = "轻度焦虑";
+            else if(stdScore < 70) level = "中度焦虑";
+            else level = "重度焦虑";
+            resultHTML = `<h4>SAS 评估结果</h4><div>粗分：<b>${rawScore}</b>，标准分：<span class="score">${stdScore}</span></div>
+                          <div style="font-weight:bold; color:#e65100; margin-top:5px;">${level}</div>
+                          <div class="desc">请注意，测试结果仅供辅助参考，不作为医疗诊断依据。</div>`;
+        } 
+        else if(scale === 'scl90') {
+            let sumScore = 0, positiveItems = 0;
+            const factorScore = {};
+            // 初始化因子
+            for(let factor in data.factorMap) factorScore[factor] = { total: 0, count: data.factorMap[factor].length };
+            
+            for(let i = 0; i < questions.length; i++) {
+                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
+                sumScore += val;
+                if(val >= 2) positiveItems++;
+                // 因子归类
+                for(let factor in data.factorMap) {
+                    if(data.factorMap[factor].includes(i+1)) {
+                        factorScore[factor].total += val;
+                    }
+                }
+            }
+
+            // 生成报告
+            let factorHTML = "<div style='font-size:14px; line-height:2; margin:10px 0;'>";
+            let hasHighFactor = false;
+            for(let factor in factorScore) {
+                const avg = (factorScore[factor].total / factorScore[factor].count).toFixed(2);
+                const warn = avg > 2 ? "⚠️ 偏高" : "";
+                if(avg > 2) hasHighFactor = true;
+                factorHTML += `<b>${factor}</b>：${avg} 分 ${warn}<br>`;
+            }
+            factorHTML += "</div>";
+
+            let conclusion = `总分：<span class="score">${sumScore}</span><br>阳性项目数：<b>${positiveItems}</b>（>43项为疑阳性）`;
+            if(sumScore > 160 || positiveItems > 43 || hasHighFactor) {
+                conclusion += `<br><div style="color:#e53935; font-weight:bold; margin-top:10px;">🚨 筛查结果呈阳性，建议立即咨询心理医生或前往医院精神科进行专业测评！</div>`;
+            } else {
+                conclusion += `<br><div style="color:#2e7d32; font-weight:bold; margin-top:10px;">✅ 您的SCL-90总得分处于正常波动范围，请继续保持良好生活习惯。</div>`;
+            }
+            resultHTML = `<h4>SCL-90 评估报告</h4><div>${conclusion}</div><div class="desc" style="border-top:1px dashed #ccc; margin-top:15px; padding-top:15px;">各因子均分（超过2分需警惕）：<br>${factorHTML}</div>`;
+        }
+
+        const resultBox = document.getElementById('result-' + scale);
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = resultHTML + `<div style="margin-top:15px; font-size:12px; color:#888; border-top:1px solid #eee; padding-top:10px;">* 本结果仅供参考，不作为临床诊断标准。</div>`;
+    }
+</script>
+</body>
+</html>
