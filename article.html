@@ -4,12 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>心理科普 - 心理援助</title>
-    <!-- 引入统一的全局 CSS -->
-    <link rel="stylesheet" href="style.css">
-    
-    <!-- 本页面专用的“折叠面板”交互样式 -->
     <style>
-        /* 原生 HTML 折叠标签的定制 */
+        /* 统一基础样式 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #fef9ef 0%, #eef2f7 100%);
+            font-family: 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+            padding: 20px 14px 50px;
+            color: #1e2b3c;
+        }
+        .container { max-width: 560px; margin: 0 auto; }
+
+        /* 顶部导航 */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding: 5px 0; flex-wrap: wrap; gap: 10px;
+        }
+        .top-nav span { font-weight: 800; font-size: 20px; color: #1e4b6e; }
+        .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+        .top-nav a {
+            text-decoration: none; background: rgba(255,255,255,0.8);
+            padding: 6px 14px; border-radius: 30px; font-size: 13px; color: #1e4b6e;
+            border: 1px solid #d0e0f0; transition: all 0.2s;
+        }
+        .top-nav a:active { background: #e3eefa; }
+        .top-nav a.active { background: #1e5a88; color: white; border-color: #1e5a88; }
+
+        /* 页面标题 */
+        h2 { text-align: center; margin: 15px 0 10px; font-size: 22px; color: #1e5a88; }
+        .subtitle { text-align: center; font-size: 13px; color: #7895b0; margin-bottom: 20px; }
+
+        /* 科普卡片列表 */
+        .article-card {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 15px 18px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            border: 1px solid rgba(60,130,180,0.1);
+        }
+
+        /* 原生 HTML 折叠标签 */
         details.article-details {
             cursor: pointer;
         }
@@ -39,6 +74,12 @@
         .article-tip {
             background: #f7f9fc; padding: 10px; border-radius: 12px; font-size: 13px; color: #5b7a99; margin-top: 15px;
         }
+
+        /* 底部 */
+        .footer-note {
+            font-size: 12px; color: #8fa0b5; text-align: center;
+            margin-top: 32px; padding: 16px; background: #eef3fc; border-radius: 28px;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +100,7 @@
     <p class="subtitle">帮你更懂自己的情绪，掌握舒缓的方法</p>
 
     <!-- 科普文章 1 -->
-    <div class="card">
+    <div class="article-card">
         <details class="article-details">
             <summary>😮‍💨 认识压力：你的身体在说什么？</summary>
             <div class="article-content">
@@ -76,7 +117,7 @@
     </div>
 
     <!-- 科普文章 2 -->
-    <div class="card">
+    <div class="article-card">
         <details class="article-details">
             <summary>🌬️ 简单有效的腹式呼吸放松法</summary>
             <div class="article-content">
@@ -94,7 +135,7 @@
     </div>
 
     <!-- 科普文章 3 -->
-    <div class="card">
+    <div class="article-card">
         <details class="article-details">
             <summary>😴 为什么好好睡觉能缓解情绪？</summary>
             <div class="article-content">
@@ -108,7 +149,6 @@
         </details>
     </div>
 
-    <!-- 底部说明 -->
     <div class="footer-note">
         📝 心理科普内容仅作日常了解和自我调适参考。<br>
         若遇到强烈的心理不适，请返回首页“查热线”寻求专业帮助。
