@@ -4,11 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>情绪自测 - 心理援助</title>
-    <!-- 引入统一的全局 CSS -->
-    <link rel="stylesheet" href="style.css">
-
-    <!-- 本页面专用样式：量表按钮、题卡排版、选项布局 -->
     <style>
+        /* 继承前面主站的样式，保持整体风格一致 */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: linear-gradient(145deg, #fef9ef 0%, #eef2f7 100%);
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            padding: 20px 14px 50px;
+            color: #1e2b3c;
+        }
+        .container { max-width: 560px; margin: 0 auto; }
+        
+        /* 顶栏导航（呼应主页） */
+        .top-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 20px; padding: 10px 5px;
+        }
+        .top-nav span { font-weight: 800; font-size: 20px; color: #1e4b6e; }
+        .top-nav a {
+            text-decoration: none; background: rgba(255,255,255,0.8);
+            padding: 8px 16px; border-radius: 30px; font-size: 14px; color: #1e4b6e;
+            border: 1px solid #d0e0f0; transition: all 0.2s;
+        }
+        .top-nav a:active { background: #e3eefa; }
+
+        h2 { text-align: center; margin: 15px 0 10px; font-size: 22px; color: #1e5a88; }
+        .subtitle { text-align: center; font-size: 13px; color: #7895b0; margin-bottom: 20px; }
+
+        /* 量表选择按钮 */
         .scale-selector {
             display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
             margin-bottom: 25px;
@@ -23,7 +46,13 @@
             background: #1e5a88; color: white; border-color: #1e5a88; box-shadow: 0 4px 8px rgba(30,90,136,0.2);
         }
 
-        .test-card { display: none; }
+        /* 测试卡片 */
+        .test-card {
+            background: white; border-radius: 32px; padding: 20px 18px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05); border: 1px solid rgba(60,130,180,0.15);
+            display: none; /* 默认隐藏 */
+        }
+
         .test-card h3 {
             font-size: 18px; margin-bottom: 10px; border-left: 4px solid #f7b32b;
             padding-left: 12px; color: #1e4b6e;
@@ -43,7 +72,14 @@
         .options input[type="radio"] { accent-color: #1e5a88; transform: scale(1.1); margin-right: 2px; }
         .options label:has(input:checked) { background: #e4edf6; border-color: #1e5a88; font-weight: 500; color: #1e5a88; }
 
+        /* 提交按钮 */
         .submit-wrap { text-align: center; margin: 10px 0 20px; }
+        .btn-submit {
+            background: linear-gradient(135deg, #1e4b6e, #2a7faa);
+            color: white; border: none; padding: 12px 40px; border-radius: 50px;
+            font-size: 16px; font-weight: bold; box-shadow: 0 4px 8px rgba(30,90,136,0.2); cursor: pointer;
+        }
+        .btn-submit:active { transform: scale(0.95); }
 
         /* 结果展示 */
         .result-box {
@@ -53,20 +89,22 @@
         .result-box h4 { font-size: 18px; color: #1e5a88; margin-bottom: 5px; }
         .result-box .score { font-size: 32px; font-weight: 800; color: #0460b0; }
         .result-box .desc { margin-top: 10px; font-size: 15px; color: #3d5a73; line-height: 1.6; }
+
+        /* 重要安全提示 */
+        .safety-warning {
+            margin-top: 25px; background: #fff3e9; padding: 15px; border-radius: 25px;
+            border-left: 4px solid #d32f2f; font-size: 14px; color: #7a2e2e; line-height: 1.6;
+        }
+        .safety-warning strong { color: #b71c1c; }
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- 顶部导航 -->
+    
+    <!-- 顶部导航（跳回主页用） -->
     <div class="top-nav">
-        <span>❤️ 心理援助</span>
-        <div class="nav-links">
-            <a href="index.html">查热线</a>
-            <a href="article.html">心理科普</a>
-            <a href="test.html" class="active">情绪自测</a>
-            <a href="treehole.html">匿名树洞</a>
-            <a href="about.html">关于本站</a>
-        </div>
+        <span>❤️ 心理自测</span>
+        <a href="index.html">← 回查热线</a>
     </div>
 
     <h2>情绪健康自评</h2>
@@ -83,35 +121,35 @@
 
     <!-- 测试区域 -->
     <div id="test-area">
-        <div class="card test-card" id="card-phq9">
+        <div class="test-card" id="card-phq9">
             <h3>PHQ-9 抑郁症筛查量表</h3>
             <div id="questions-phq9"></div>
             <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('phq9')">查看评估结果</button></div>
             <div class="result-box" id="result-phq9"></div>
         </div>
 
-        <div class="card test-card" id="card-gad7">
+        <div class="test-card" id="card-gad7">
             <h3>GAD-7 广泛性焦虑量表</h3>
             <div id="questions-gad7"></div>
             <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('gad7')">查看评估结果</button></div>
             <div class="result-box" id="result-gad7"></div>
         </div>
 
-        <div class="card test-card" id="card-sds">
+        <div class="test-card" id="card-sds">
             <h3>SDS 抑郁自评量表 (20题)</h3>
             <div id="questions-sds"></div>
             <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('sds')">查看评估结果</button></div>
             <div class="result-box" id="result-sds"></div>
         </div>
 
-        <div class="card test-card" id="card-sas">
+        <div class="test-card" id="card-sas">
             <h3>SAS 焦虑自评量表 (20题)</h3>
             <div id="questions-sas"></div>
             <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('sas')">查看评估结果</button></div>
             <div class="result-box" id="result-sas"></div>
         </div>
 
-        <div class="card test-card" id="card-scl90">
+        <div class="test-card" id="card-scl90">
             <h3>SCL-90 症状自评量表 (90题)</h3>
             <div id="questions-scl90"></div>
             <div class="submit-wrap"><button class="btn-submit" onclick="calculateResult('scl90')">查看评估结果</button></div>
@@ -119,15 +157,14 @@
         </div>
     </div>
 
-    <!-- 重要安全提示（直接使用全局 class） -->
+    <!-- 重要安全提示 -->
     <div class="safety-warning">
         <strong>🚨 重要提醒：</strong><br>
         本评估结果仅作初步自我参考，<strong>不可替代专业医学诊断</strong>。<br>
-        如您的情绪已经严重影响到生活，或出现自伤念头，请立即拨打 <strong>110</strong> 或 <strong>120</strong>，也可直接点击顶部导航栏的 <strong>“查热线”</strong> 寻求专业电话求助！
+        如您的情绪已经严重影响到生活，或出现自伤念头，请立即拨打 <strong>110</strong> 或 <strong>120</strong>，也可直接点击顶部导航栏的 <strong>“回查热线”</strong> 寻求专业电话求助！
     </div>
 </div>
 
-<!-- 引用外部数据与交互逻辑 -->
 <script src="test_data.js"></script>
 <script>
     // 页面初始化
@@ -194,18 +231,18 @@
                 // 分页控制
                 const navDiv = document.createElement('div');
                 navDiv.style.cssText = 'display:flex; justify-content:center; gap:15px; margin-top:20px;';
-                if(page > 0) navDiv.innerHTML += `<button class="btn-submit" style="padding:8px 15px; width:auto;" onclick="renderPageFor('${scale}', ${page-1})">上一页</button>`;
+                if(page > 0) navDiv.innerHTML += `<button class="btn-submit" style="padding:8px 15px;" onclick="renderPageFor('${scale}', ${page-1})">上一页</button>`;
                 navDiv.innerHTML += `<span style="font-size:14px; color:#555; line-height:40px;">${page+1} / ${totalPages}</span>`;
-                if(page < totalPages - 1) navDiv.innerHTML += `<button class="btn-submit" style="padding:8px 15px; width:auto;" onclick="renderPageFor('${scale}', ${page+1})">下一页</button>`;
+                if(page < totalPages - 1) navDiv.innerHTML += `<button class="btn-submit" style="padding:8px 15px;" onclick="renderPageFor('${scale}', ${page+1})">下一页</button>`;
                 container.appendChild(navDiv);
-                window.scrollTo(0, 150);
+                window.scrollTo(0, 150); // 翻页滑动到顶部方便查看
             }
             window.renderPageFor = function(scale, page) {
                 renderPage(page);
             };
             renderPage(0);
         } else {
-            // 其他量表全部显示
+            // 其他量表全部显示（BUG 修复点：已把 i 改为 index）
             questions.forEach((q, index) => {
                 const div = document.createElement('div');
                 div.className = 'question';
@@ -243,38 +280,7 @@
         if(!allAnswered) { alert("请完成所有题目后再点击查看结果！"); return; }
 
         let resultHTML = "";
-        if(scale === 'phq9') {
-            let rawScore = 0;
-            for(let i = 0; i < questions.length; i++) {
-                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
-                rawScore += val;
-            }
-            let level = "", suggestion = "";
-            if(rawScore <= 4) { level = "无抑郁 (0-4分)"; suggestion = "当前情绪状态良好。"; }
-            else if(rawScore <= 9) { level = "轻度抑郁 (5-9分)"; suggestion = "建议多与亲友交流，注意调整作息。"; }
-            else if(rawScore <= 14) { level = "中度抑郁 (10-14分)"; suggestion = "建议寻求心理疏导或去精神卫生中心咨询。"; }
-            else if(rawScore <= 19) { level = "中重度抑郁 (15-19分)"; suggestion = "建议立即前往医院精神科就诊。"; }
-            else { level = "重度抑郁 (20-27分)"; suggestion = "需要高度重视！请立刻前往专业医疗机构评估！"; }
-            resultHTML = `<h4>PHQ-9 评估结果</h4><div>总分：<span class="score">${rawScore}</span></div>
-                          <div style="font-weight:bold; color:#e65100; margin-top:5px;">${level}</div>
-                          <div class="desc">${suggestion}</div>`;
-        } 
-        else if(scale === 'gad7') {
-            let rawScore = 0;
-            for(let i = 0; i < questions.length; i++) {
-                const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
-                rawScore += val;
-            }
-            let level = "", suggestion = "";
-            if(rawScore <= 4) { level = "无焦虑 (0-4分)"; suggestion = "当前情绪状态良好。"; }
-            else if(rawScore <= 9) { level = "轻度焦虑 (5-9分)"; suggestion = "建议尝试腹式呼吸放松法。"; }
-            else if(rawScore <= 14) { level = "中度焦虑 (10-14分)"; suggestion = "建议寻求心理咨询帮助。"; }
-            else { level = "重度焦虑 (15-21分)"; suggestion = "强烈建议前往专业医院精神心理科就诊。"; }
-            resultHTML = `<h4>GAD-7 评估结果</h4><div>总分：<span class="score">${rawScore}</span></div>
-                          <div style="font-weight:bold; color:#e65100; margin-top:5px;">${level}</div>
-                          <div class="desc">${suggestion}</div>`;
-        }
-        else if(scale === 'sds') {
+        if(scale === 'sds') {
             let rawScore = 0;
             for(let i = 0; i < questions.length; i++) {
                 const val = parseInt(document.querySelector(`input[name="q_${scale}_${i}"]:checked`).value);
